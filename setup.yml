@@ -26,3 +26,9 @@
               - uv4l-raspicam
               - uv4l-raspicam-extras
             state: present
+
+        - name: Start service
+          service:
+            name: uv4l_raspicam
+            enabled: yes
+            state: started

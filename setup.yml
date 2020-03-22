@@ -1,0 +1,28 @@
+---
+
+- name: Setup raspycar
+  hosts: raspycar
+  gather_facts: no
+  tasks:
+    - name: Instal uv4l
+      become: yes
+      block:
+        - name: Add apt-key
+          apt_key:
+            url: http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc
+            state: present
+
+        - name: Add apt repository
+          apt_repository:
+            repo: "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main"
+            state: present
+            filename: uv4l
+            update_cache: yes
+
+        - name: Install packages
+          apt:
+            name:
+              - uv4l
+              - uv4l-raspicam
+              - uv4l-raspicam-extras
+            state: present

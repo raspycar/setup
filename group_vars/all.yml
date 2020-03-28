@@ -1,0 +1,5 @@
+---
+video_conf_path: /etc/uv4l/uv4l-raspicam.conf
+video_width: 320
+video_height: 240
+video_framerate: 30

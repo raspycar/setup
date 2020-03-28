@@ -6,6 +6,7 @@
   tasks:
     - name: Instal uv4l
       become: yes
+      tags: [video]
       block:
         - name: Add apt-key
           apt_key:
@@ -28,8 +29,31 @@
               - uv4l-raspicam-extras
             state: present
 
+        - name: Edit config
+          block:
+            - name: Setup width
+              lineinfile:
+                state: present
+                path: "{{ video_conf_path }}"
+                regexp: ^width
+                line: "width = {{ video_width }}"
+
+            - name: Setup height
+              lineinfile:
+                state: present
+                path: "{{ video_conf_path }}"
+                regexp: ^height
+                line: "height = {{ video_height }}"
+
+            - name: Setup framerate
+              lineinfile:
+                state: present
+                path: "{{ video_conf_path }}"
+                regexp: ^framerate
+                line: "framerate = {{ video_framerate }}"
+
         - name: Start service
           service:
             name: uv4l_raspicam
             enabled: yes
-            state: started
+            state: restarted

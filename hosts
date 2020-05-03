@@ -1,1 +1,1 @@
-raspycar ansible_host=192.168.1.19 ansible_ssh_user=pi
+raspycar ansible_host=192.168.1.20 ansible_ssh_user=pi

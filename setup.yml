@@ -68,6 +68,12 @@
           - python3-pip
           - python3-venv
 
+    - name: Update sources
+      tags: [app]
+      git:
+        repo: git@github.com:raspycar/server.git
+        dest: /home/pi/raspycar-server
+
     - name: Install Poetry
       tags: [python]
       block:
@@ -78,23 +84,26 @@
         - name: Install
           command: python3 /tmp/get-poetry.py -y
 
+    - name: Install pip
+      tags: [python]
+      block:
+        - name: Download installation script
+          get_url:
+            url: https://bootstrap.pypa.io/get-pip.py
+            dest: /tmp/get-pip.py
+        - name: Install
+          command: /home/pi/.poetry/bin/poetry run python /tmp/get-pip.py
+          args:
+            chdir: /home/pi/raspycar-server
+
     - name: Install app
       tags: [app]
       block:
-        - name: Update sources
-          git:
-            repo: git@github.com:raspycar/server.git
-            dest: /home/pi/raspycar-server
         - name: Write configuration file
           template:
             src: server_config.j2
             dest: /home/pi/raspycar-server/.env
-        # Workaround for pip not found...
-        - name: Generate requirements.txt file
-          shell: /home/pi/.poetry/bin/poetry export -f requirements.txt --without-hashes > requirements.txt
-          args:
-            chdir: /home/pi/raspycar-server
         - name: Install dependencies
-          command: /home/pi/.poetry/bin/poetry run pip3 install -r requirements.txt
+          command: /home/pi/.poetry/bin/poetry install --no-dev
           args:
             chdir: /home/pi/raspycar-server

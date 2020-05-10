@@ -107,3 +107,33 @@
           command: /home/pi/.poetry/bin/poetry install --no-dev
           args:
             chdir: /home/pi/raspycar-server
+
+    - name: Setup supervisor
+      become: yes
+      tags: [supervisor]
+      block:
+        - name: Install package
+          apt:
+            name: supervisor
+            state: present
+        - name: Start service
+          service:
+            name: supervisor
+            enabled: yes
+            state: restarted
+
+    - name: Write supervisor config
+      become: yes
+      tags: [app]
+      template:
+        src: supervisor.j2
+        dest: /etc/supervisor/conf.d/raspycar.conf
+
+    - name: Restart supervisor
+      become: yes
+      tags:
+        - supervisor
+        - app
+      supervisorctl:
+        name: raspycar:uvicorn-0
+        state: restarted

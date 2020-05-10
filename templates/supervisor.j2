@@ -1,0 +1,13 @@
+[fcgi-program:raspycar]
+directory=/home/pi/raspycar-server
+socket=tcp://0.0.0.0:{{port}}
+command=/home/pi/.poetry/bin/poetry run uvicorn --fd 0 raspycar.app:app
+numprocs=1
+process_name=uvicorn-%(process_num)d
+stdout_logfile=/var/log/raspycar.log
+stdout_logfile_maxbytes=0
+stderr_logfile=/var/log/raspycar.error.log
+stderr_logfile_maxbytes=0
+autostart=true
+autorestart=true
+user=pi

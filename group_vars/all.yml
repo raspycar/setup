@@ -5,3 +5,4 @@ video_height: 240
 video_framerate: 30
 video_port: 8080
 port: 8000
+raspycar_version: master

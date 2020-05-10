@@ -70,9 +70,18 @@
 
     - name: Update sources
       tags: [app]
-      git:
-        repo: git@github.com:raspycar/server.git
-        dest: /home/pi/raspycar-server
+      block:
+        - name: Install git
+          become: yes
+          apt:
+            state: present
+            name: git
+
+        - name: Update repo sources
+          git:
+            repo: https://github.com/raspycar/server.git
+            dest: /home/pi/raspycar-server
+            version: "{{raspycar_version}}"
 
     - name: Install Poetry
       tags: [python]

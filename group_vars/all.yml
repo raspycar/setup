@@ -2,7 +2,8 @@
 video_conf_path: /etc/uv4l/uv4l-raspicam.conf
 video_width: 320
 video_height: 240
-video_framerate: 30
+video_framerate: 25
+video_buffers: 2
 video_port: 8080
 port: 8000
 raspycar_version: master

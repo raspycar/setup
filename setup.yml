@@ -52,6 +52,13 @@
                 regexp: ^framerate
                 line: "framerate = {{ video_framerate }}"
 
+            - name: Setup frame buffers
+              lineinfile:
+                state: present
+                path: "{{ video_conf_path }}"
+                regexp: ^frame-buffers
+                line: "frame-buffers = {{ video_buffers }}"
+
         - name: Start service
           service:
             name: uv4l_raspicam
